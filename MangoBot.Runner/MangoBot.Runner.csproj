@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
+        <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Discord.Net" Version="3.16.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+        <PackageReference Include="Microsoft.SemanticKernel" Version="1.31.0" />
+        <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="1.31.0" />
+        <PackageReference Include="Microsoft.SemanticKernel.Connectors.Redis" Version="1.31.0-preview" />
+        <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.31.0" />
+        <PackageReference Include="Microsoft.SemanticKernel.Planners.OpenAI" Version="1.31.0-preview" />
+        <PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.31.0-alpha" />
+        <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.31.0-alpha" />
+        <PackageReference Include="Microsoft.SemanticKernel.Plugins.Web" Version="1.31.0-alpha" />
+        <PackageReference Include="StackExchange.Redis" Version="2.8.22" />
+    </ItemGroup>
+
+</Project>
