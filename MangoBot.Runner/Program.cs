@@ -8,11 +8,11 @@ public static class Program
     {
         var engine = new DiscordEngine(Config.Instance.DiscordToken);
         
-        // var bot = new KernelBotOne(engine);
-        
+        var bot = new KernelBotOne(engine);
+       
         // var bot = new KernelBotTwoWithMemory(engine);
         
-        var bot = new KernelBotThreeWithFunctions(engine);
+        // var bot = new KernelBotThreeWithFunctions(engine);
         // var bot = new KernelBotThreeWithPlanner(engine);
 
         await engine.Start();
