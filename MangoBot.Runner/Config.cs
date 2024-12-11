@@ -66,4 +66,14 @@ public class Config
         get => "text-embedding-ada-002";
         // get => "text-embedding-3-small";
     }
+
+    public string OllamaModel
+    {
+        get => "llama3.2";
+    }
+    
+    public string OllamaUrl
+    {
+        get => "http://127.0.0.1:11434/";
+    }
 }

@@ -9,6 +9,7 @@ public static class Program
         var engine = new DiscordEngine(Config.Instance.DiscordToken);
         
         var bot = new KernelBotOne(engine);
+        // var bot = new KernelBotOneOllama(engine);
        
         // var bot = new KernelBotTwoWithMemory(engine);
         
