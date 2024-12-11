@@ -20,7 +20,6 @@ public class DiscordPlugin(DiscordEngine discordEngine)
         Console.WriteLine("DiscordPlugin.ListUsers");
         var users = await discordEngine.ListUsers();
         return users.AsJson();
-        ;
     }
 
 
@@ -58,7 +57,7 @@ public class DiscordPlugin(DiscordEngine discordEngine)
             return $"user ${username} not found, use ListUsers to get the list of users";
         }
 
-        // that's ok, we don
+        // that's ok, we don't need to await this task, but don't do it in production
         Task.Run(async () =>
         {
             await Task.Delay(TimeSpan.FromSeconds(delayInSeconds));

@@ -29,7 +29,7 @@ public class KernelBotOne : BaseKernelBot
         var promptTemplate =
             """
             Your name is MangoBot and you are a discord server bot  
-            for the community Chocolate Lovers' Anonymus (CLA)
+            for the community Chocolate Lovers' Anonymous (also known as CLA),
             be helpful and answer questions about the server and the users.
             Answer the questions as best as you can with a fun a nice mood.
             

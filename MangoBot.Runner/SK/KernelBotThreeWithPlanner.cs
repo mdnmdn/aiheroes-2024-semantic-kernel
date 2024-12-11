@@ -37,8 +37,6 @@ public class KernelBotThreeWithPlanner : BaseKernelBot
         _kernel  = builder.Build();
         
         _kernel.FunctionInvocationFilters.Add(new LogginFilter());
-
-  
     }
 
     public override async Task Init()
@@ -53,10 +51,6 @@ public class KernelBotThreeWithPlanner : BaseKernelBot
         var kernelPlugin = _kernel.CreatePluginFromObject(memoryPlugin);
         
         _kernel.Plugins.Add(kernelPlugin);
-
-        _init = true;
-        await base.Init();
-
 
         // setup time plugin
         _kernel.ImportPluginFromObject(new TimePlugin(), "TimePlugin");
@@ -112,7 +106,7 @@ public class KernelBotThreeWithPlanner : BaseKernelBot
 
                 var input = $"""
                              Your name is MangoBot and you are discord server bot 
-                             for the community Chocolate Lovers' Anonymus (CLA),
+                             for the community Chocolate Lovers' Anonymous (also known as CLA),
                              be helpful and answer questions about the server and the users.
                              
                              In order do get information about the user you could use the following functions: Recall with the default collection {MessageCollectionName}
@@ -147,17 +141,10 @@ public class KernelBotThreeWithPlanner : BaseKernelBot
             ColorConsole.WriteLine($"Function {function} is being invoked");
 
             await next(context);
-
             
-            var metadata = context.Result?.Metadata;
+            // var metadata = context.Result?.Metadata;
             
-            // function = $"{context.Function.PluginName ?? "@"}.{context.Function.Name}";
             ColorConsole.WriteLine($"Function {function} has been invoked");
-
-            // if (metadata is not null && metadata.ContainsKey("Usage"))
-            // {
-            //     this._output.WriteLine($"Token usage: {metadata["Usage"]?.AsJson()}");
-            // }
         }
     }
 }

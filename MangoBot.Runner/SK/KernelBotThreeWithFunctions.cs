@@ -37,8 +37,6 @@ public class KernelBotThreeWithFunctions : BaseKernelBot
         _kernel  = builder.Build();
         
         _kernel.FunctionInvocationFilters.Add(new LogginFilter());
-
-  
     }
 
     public override async Task Init()
@@ -54,10 +52,6 @@ public class KernelBotThreeWithFunctions : BaseKernelBot
         
         _kernel.Plugins.Add(kernelPlugin);
 
-        _init = true;
-        await base.Init();
-
-
         // setup time plugin
         _kernel.ImportPluginFromObject(new TimePlugin(), "TimePlugin");
 
@@ -72,20 +66,6 @@ public class KernelBotThreeWithFunctions : BaseKernelBot
         // setup discord plugin
         var discordPlugin = new DiscordPlugin(Discord);
         _kernel.ImportPluginFromObject(discordPlugin, "discord");
-
-
-        // // setup planner
-        // var config = new FunctionCallingStepwisePlannerOptions()
-        // {
-        //     SemanticMemoryConfig = new SemanticMemoryConfig
-        //     {
-        //         Memory = _memory,
-        //     },
-        //     MaxIterations = 15,
-        //     MinIterationTimeMs = 0,
-        //     MaxTokens = 8000,
-        // };
-        // _planner = new FunctionCallingStepwisePlanner(config);
 
         _init = true;
         await base.Init();
@@ -112,7 +92,7 @@ public class KernelBotThreeWithFunctions : BaseKernelBot
 
                 var input = $"""
                              Your name is MangoBot and you are discord server bot,
-                             for the community Chocolate Lovers' Anonymus (CLA),
+                             for the community Chocolate Lovers' Anonymous (also known as CLA),
                              be helpful and answer questions about the server and the users.
                              
                              In order do get information about the user you could use the following functions: Recall
@@ -120,6 +100,8 @@ public class KernelBotThreeWithFunctions : BaseKernelBot
                              The finale answer and the direct messages have to be in the same language of the initial message.
                              If the you are answering to the initial user don't send a direct message but use the final answer.
 
+                             The server language is english.
+                             
                              The user sending the message is {message.Sender} and the message is:
 
                              -----------------
@@ -149,17 +131,8 @@ public class KernelBotThreeWithFunctions : BaseKernelBot
             ColorConsole.WriteLine($"Function {function} is being invoked");
 
             await next(context);
-
             
-            var metadata = context.Result?.Metadata;
-            
-            // function = $"{context.Function.PluginName ?? "@"}.{context.Function.Name}";
             ColorConsole.WriteLine($"Function {function} has been invoked");
-
-            // if (metadata is not null && metadata.ContainsKey("Usage"))
-            // {
-            //     this._output.WriteLine($"Token usage: {metadata["Usage"]?.AsJson()}");
-            // }
         }
     }
 }
