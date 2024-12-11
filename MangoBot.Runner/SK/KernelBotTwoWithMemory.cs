@@ -34,16 +34,16 @@ public class KernelBotTwoWithMemory : BaseKernelBot
         _kernel  = builder.Build();
         
         _kernel.FunctionInvocationFilters.Add(new LogginFilter());
-        
        
         var promptTemplate =
             """
-            Your name is MangoBot and you are discord server bot, be helpful and answer questions about the server and the users.
+            Your name is MangoBot and you are discord server bot,
+            for the community Chocolate Lovers' Anonymus (CLA),
+            be helpful and answer questions about the server and the users.
 
             If possible use the relevant messages to answer the question.
 
             if you mention a user prefix the name with @, as example for user MangoBot use @MangoBot.
-
 
             -------  Relevant messages   -----------------
             {{Recall}}
@@ -57,14 +57,12 @@ public class KernelBotTwoWithMemory : BaseKernelBot
         _mainFunction = _kernel.CreateFunctionFromPrompt(promptTemplate,
             new OpenAIPromptExecutionSettings()
             {
-                MaxTokens = 100, Temperature = 1, TopP = 1
+                MaxTokens = 200, Temperature = 1, TopP = 1
             });
     }
 
     public override async Task Init()
     {
-        
-        
         // Setup memory
         var embeddingGenerator = _kernel.GetRequiredService<ITextEmbeddingGenerationService>();
 
@@ -146,13 +144,12 @@ public class KernelBotTwoWithMemory : BaseKernelBot
             
             var metadata = context.Result?.Metadata;
             
-            // function = $"{context.Function.PluginName ?? "@"}.{context.Function.Name}";
             ColorConsole.WriteLine($"Function {function} has been invoked");
 
-            // if (metadata is not null && metadata.ContainsKey("Usage"))
-            // {
-            //     this._output.WriteLine($"Token usage: {metadata["Usage"]?.AsJson()}");
-            // }
+            if (metadata is not null && metadata.ContainsKey("Usage"))
+            {
+                ColorConsole.WriteLine($"Token usage: {metadata["Usage"]?.AsJson()}");
+            }
         }
     }
 }

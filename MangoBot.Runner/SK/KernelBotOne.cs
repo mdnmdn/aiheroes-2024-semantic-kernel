@@ -28,7 +28,8 @@ public class KernelBotOne : BaseKernelBot
 
         var promptTemplate =
             """
-            Your name is MangoBot and you are a discord server bot, 
+            Your name is MangoBot and you are a discord server bot  
+            for the community Chocolate Lovers' Anonymus (CLA)
             be helpful and answer questions about the server and the users.
             Answer the questions as best as you can with a fun a nice mood.
             
@@ -40,7 +41,7 @@ public class KernelBotOne : BaseKernelBot
         _mainFunction = _kernel.CreateFunctionFromPrompt(promptTemplate,
             new OpenAIPromptExecutionSettings()
             {
-                MaxTokens = 100, Temperature = 1, TopP = 1
+                MaxTokens = 200, Temperature = 1, TopP = 1
             });
     }
 
@@ -54,7 +55,7 @@ public class KernelBotOne : BaseKernelBot
                 await Discord.SetTyping(message.OriginalMessage.Channel);
 
                 
-                var result = await _kernel.InvokeAsync( _mainFunction, new KernelArguments() { ["input"] = message.Message });
+                var result = await _kernel.InvokeAsync(_mainFunction, new KernelArguments() { ["input"] = message.Message });
                 var response = result.GetValue<string>();
                 
                 if (response.HasValue())

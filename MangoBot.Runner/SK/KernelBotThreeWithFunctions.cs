@@ -2,6 +2,7 @@ using MangoBot.Runner.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Embeddings;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Core;
@@ -16,17 +17,16 @@ namespace MangoBot.Runner.SK;
 #pragma warning disable SKEXP0010
 #pragma warning disable SKEXP0050
 #pragma warning disable SKEXP0060
-public class KernelBotThreeWithPlanner : BaseKernelBot
+public class KernelBotThreeWithFunctions : BaseKernelBot
 {
     private readonly Kernel _kernel;
     const string MessageCollectionName = "mango-messages";
     private bool _init = false;
     private SemanticTextMemory? _memory;
-    private FunctionCallingStepwisePlanner _planner;
 
     protected override string BotVersion => "v3";
 
-    public KernelBotThreeWithPlanner(DiscordEngine engine) : base(engine)
+    public KernelBotThreeWithFunctions(DiscordEngine engine) : base(engine)
     {
         var builder = Kernel.CreateBuilder();
             
@@ -74,18 +74,18 @@ public class KernelBotThreeWithPlanner : BaseKernelBot
         _kernel.ImportPluginFromObject(discordPlugin, "discord");
 
 
-        // setup planner
-        var config = new FunctionCallingStepwisePlannerOptions()
-        {
-            SemanticMemoryConfig = new SemanticMemoryConfig
-            {
-                Memory = _memory,
-            },
-            MaxIterations = 15,
-            MinIterationTimeMs = 0,
-            MaxTokens = 8000,
-        };
-        _planner = new FunctionCallingStepwisePlanner(config);
+        // // setup planner
+        // var config = new FunctionCallingStepwisePlannerOptions()
+        // {
+        //     SemanticMemoryConfig = new SemanticMemoryConfig
+        //     {
+        //         Memory = _memory,
+        //     },
+        //     MaxIterations = 15,
+        //     MinIterationTimeMs = 0,
+        //     MaxTokens = 8000,
+        // };
+        // _planner = new FunctionCallingStepwisePlanner(config);
 
         _init = true;
         await base.Init();
@@ -111,11 +111,12 @@ public class KernelBotThreeWithPlanner : BaseKernelBot
                 await Discord.SetTyping(message.OriginalMessage.Channel);
 
                 var input = $"""
-                             Your name is MangoBot and you are discord server bot 
+                             Your name is MangoBot and you are discord server bot,
                              for the community Chocolate Lovers' Anonymus (CLA),
                              be helpful and answer questions about the server and the users.
                              
-                             In order do get information about the user you could use the following functions: Recall with the default collection {MessageCollectionName}
+                             In order do get information about the user you could use the following functions: Recall
+                             with the default collection {MessageCollectionName}
                              The finale answer and the direct messages have to be in the same language of the initial message.
                              If the you are answering to the initial user don't send a direct message but use the final answer.
 
@@ -126,8 +127,9 @@ public class KernelBotThreeWithPlanner : BaseKernelBot
                              -----------------
                              """;
 
-                var result = await _planner.ExecuteAsync(_kernel, input);
-                var response = result.FinalAnswer;
+                OpenAIPromptExecutionSettings executionSettings = new() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() };
+                var result = await _kernel.InvokePromptAsync(input, new ( executionSettings ));
+                var response = result.GetValue<string>();
                 if (response.HasValue())
                     await Discord.SendMessage(message.ChannelId, response!, message.OriginalMessage.Id);
             }
